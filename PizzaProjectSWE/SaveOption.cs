@@ -12,15 +12,15 @@ namespace PizzaProjectSWE
 {
     internal static class SaveOption
     {
-        public static void SaveCustomer(Customer c)
-        {
-            Stream f = File.Create(c.Name);
-            BinaryFormatter bf = new BinaryFormatter();
-            Console.WriteLine(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath));
-            bf.Serialize(f, c);
-            f.Close();
+        //public static void SaveCustomer(Customer c)
+        //{
+        //    Stream f = File.Create(c.Name);
+        //    BinaryFormatter bf = new BinaryFormatter();
+        //    Console.WriteLine(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath));
+        //    bf.Serialize(f, c);
+        //    f.Close();
 
-        }
+        //}
 
         //build out Data structure for saved items
 
