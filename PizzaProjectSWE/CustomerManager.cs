@@ -23,33 +23,61 @@ namespace PizzaProjectSWE
 
         private List<Customer> _customerList = new List<Customer>();
 
-        public void newCustmer(string n, string a, string num, string p, string u)
+        public CustomerManager()
         {
-            _customerList.Add(new Customer(n, a, num, p, u));
+            //Add Null customer
+            _customerList.Add(new Customer("null", "null", "null_num", "null", "null_user"));
         }
 
-        public Boolean LogInNumber(string num, string p)
+        public Boolean addCustomer(string n, string a, string num, string p, string u)
+        {
+            // Add Customer to the _customerList
+            foreach (Customer c in _customerList)
+            {
+                if (c.UserName == u || c.Number == num)
+                {
+                    return false;
+                }
+            }
+            _customerList.Add(new Customer(n, a, num, p, u));
+            return true;
+        }
+
+        public Customer LogInNumber(string num, string p)
         {
             foreach ( Customer c in _customerList)
             {
                 if (num == c.Number & p == c.Password)
                 {
-                    return true;
+                    return c;
                 }
             }
-            return false;
+            return _customerList[0];
         }
 
-        public Boolean LogInUserName(string u, string p)
+        public Boolean isCustomerPresent(string username)
+        {
+            /* all other attributes of the Customer don't matter*/
+            foreach ( Customer c in _customerList)
+            {
+                if (c.UserName == username)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public Customer LogInUserName(string u, string p)
         {
             foreach (Customer c in _customerList)
             {
                 if (u == c.UserName & p == c.Password)
                 {
-                    return true;
+                    return c;
                 }
             }
-            return false;
+            return _customerList[0];
         }
 
 
