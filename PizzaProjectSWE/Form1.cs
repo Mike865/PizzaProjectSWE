@@ -105,7 +105,6 @@ namespace PizzaProjectSWE
             }
             drinkListBox.ClearSelected();
         }
-
         private void deleteButton_Click(object sender, EventArgs e)
         {
             cartBox.Items.Remove(cartBox.SelectedItem);

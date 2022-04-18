@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace PizzaProjectSWE
 {
-    public partial class Log_In : Form
+    public partial class AccountCreation : Form
     {
-        public Log_In()
+        public AccountCreation()
         {
             InitializeComponent();
         }
-        private void createAccount_Click(object sender, EventArgs e)
+
+        private void adressLabel_Click(object sender, EventArgs e)
         {
-            AccountCreation createAccountForm = new AccountCreation();
-            createAccountForm.ShowDialog();
+
         }
     }
 }
