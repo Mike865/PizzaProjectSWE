@@ -101,6 +101,7 @@ namespace PizzaProjectSWE
             cartBox.Items.Add(wingListBox.SelectedItem.ToString());
             Food currentFood = new Food();
             currentFood.category = MenuCategory.Wing;
+            currentCartItems.Add(currentFood);
             foreach (int i in wingToppings.SelectedIndices)
             {
                 Food currentTopping = new Food();
