@@ -33,7 +33,7 @@ namespace PizzaProjectSWE
             {
                 return "    $" + cost + " " + description;
             }
-            else if(category == MenuCategory.WingSide)
+            else if(category == MenuCategory.sideTopping)
             {
                 return "    $" + cost + " " + description;
             }

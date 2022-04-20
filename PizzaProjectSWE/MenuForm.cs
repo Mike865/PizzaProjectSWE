@@ -24,12 +24,46 @@ namespace PizzaProjectSWE
             menuList.Add(new Food("Small Cheese", MenuCategory.Pizza, 8.99));
             menuList.Add(new Food("Small Pepporoni", MenuCategory.Pizza, 9.99));
             menuList.Add(new Food("Small Supreme", MenuCategory.Pizza, 12.99));
+            menuList.Add(new Food("Medium Cheese", MenuCategory.Pizza, 12.99));
+            menuList.Add(new Food("Medium Pepporoni", MenuCategory.Pizza, 13.99));
+            menuList.Add(new Food("Medium Supreme", MenuCategory.Pizza, 14.99));
+            menuList.Add(new Food("Large Cheese", MenuCategory.Pizza, 16.99));
+            menuList.Add(new Food("Large Pepporoni", MenuCategory.Pizza, 17.99));
+            menuList.Add(new Food("Large Supreme", MenuCategory.Pizza, 19.99));
             menuList.Add(new Food("Pepperoni", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Sausage", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Mushroom", MenuCategory.PizzaTopping, 0.99));
-            menuList.Add(new Food("Buffalo Wing 6 Piece", MenuCategory.Wing, 7.99));
-            menuList.Add(new Food("Blue Cheese Dressing", MenuCategory.WingSide, 1.50));
+            menuList.Add(new Food("Bannana Peppers", MenuCategory.PizzaTopping, 0.99));
+            menuList.Add(new Food("Sardines", MenuCategory.PizzaTopping, 0.99));
+            menuList.Add(new Food("Black Olives", MenuCategory.PizzaTopping, 0.99));
+            menuList.Add(new Food("Pineapple", MenuCategory.PizzaTopping, 0.99));
+            menuList.Add(new Food("Buffalo Wing 6 Piece", MenuCategory.side, 7.99));
+            menuList.Add(new Food("Lemon Pepper Wing 6 Piece", MenuCategory.side, 7.99));
+            menuList.Add(new Food("Barbecue Wing 6 Piece", MenuCategory.side, 7.99));
+            menuList.Add(new Food("Buffalo Wing 12 Piece", MenuCategory.side, 12.99));
+            menuList.Add(new Food("Lemon Pepper Wing 12 Piece", MenuCategory.side, 12.99));
+            menuList.Add(new Food("Barbecue Wing 12 Piece", MenuCategory.side, 7.99));
+            menuList.Add(new Food("Buffalo Wing 25 Piece", MenuCategory.side, 21.99));
+            menuList.Add(new Food("Lemon Pepper Wing 25 Piece", MenuCategory.side, 21.99));
+            menuList.Add(new Food("Barbecue Wing 25 Piece", MenuCategory.side, 21.99));
+            menuList.Add(new Food("Garlic Knots 4 Peice", MenuCategory.sideTopping, 6.99));
+            menuList.Add(new Food("Bread Sticks", MenuCategory.sideTopping, 6.99));
+            menuList.Add(new Food("Pretzel Twists", MenuCategory.sideTopping, 3.50));
+            menuList.Add(new Food("Blue Cheese Dressing", MenuCategory.sideTopping, 1.50));
+            menuList.Add(new Food("Ranch Dressing", MenuCategory.sideTopping, 1.50));
+            menuList.Add(new Food("Honey Mustard", MenuCategory.sideTopping, 1.50));
+            menuList.Add(new Food("Ceasar Salad Dressing", MenuCategory.sideTopping, 2.50));
+            menuList.Add(new Food("Marinara Sauce", MenuCategory.sideTopping, 1.50));
+            menuList.Add(new Food("Garlic Sauce", MenuCategory.sideTopping, 1.50));
             menuList.Add(new Food("2 Liter Coke", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Dr.Pepper", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Moutian Dew", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Sprite", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Coke Zero", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Diet Coke", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("2 Liter Root Beer", MenuCategory.Drink, 2.99));
+            menuList.Add(new Food("Gallon Sweet Tea", MenuCategory.Drink, 3.99));
+
 
         }
         #endregion
@@ -45,11 +79,11 @@ namespace PizzaProjectSWE
                     case MenuCategory.PizzaTopping:
                         pizzaToppingListBox.Items.Add(c.ToString());
                         break;
-                    case MenuCategory.Wing:
-                        wingListBox.Items.Add(c.ToString());
+                    case MenuCategory.side:
+                        sideListBox.Items.Add(c.ToString());
                         break;
-                    case MenuCategory.WingSide:
-                        wingToppings.Items.Add(c.ToString());
+                    case MenuCategory.sideTopping:
+                        sideToppings.Items.Add(c.ToString());
                         break;
                     case MenuCategory.Drink:
                         drinkListBox.Items.Add(c.ToString());
@@ -98,24 +132,26 @@ namespace PizzaProjectSWE
         private void addWingButton_Click(object sender, EventArgs e)
         {
             //adds items to cart
-            cartBox.Items.Add(wingListBox.SelectedItem.ToString());
+            cartBox.Items.Add(sideListBox.SelectedItem.ToString());
             Food currentFood = new Food();
-            currentFood.category = MenuCategory.Wing;
+            currentFood.category = MenuCategory.side;
             currentCartItems.Add(currentFood);
-            foreach (int i in wingToppings.SelectedIndices)
+            foreach (int i in sideToppings.SelectedIndices)
             {
                 Food currentTopping = new Food();
-                currentTopping.category = MenuCategory.WingSide;
-                cartBox.Items.Add(wingToppings.Items[i].ToString());
+                currentTopping.category = MenuCategory.sideTopping;
+                cartBox.Items.Add(sideToppings.Items[i].ToString());
                 currentCartItems.Add(currentTopping);
             }
-            wingListBox.ClearSelected();
-            wingToppings.ClearSelected();
+            sideListBox.ClearSelected();
+            sideToppings.ClearSelected();
         }
 
         private void addDrinkButton_Click(object sender, EventArgs e)
         {
-            //adds items to cart
+            Food currentFood = new Food();
+            currentFood.category = MenuCategory.Drink;
+            currentCartItems.Add(currentFood);
             foreach (int i in drinkListBox.SelectedIndices)
             {
                 cartBox.Items.Add(drinkListBox.Items[i].ToString());
@@ -138,19 +174,24 @@ namespace PizzaProjectSWE
                     }
                 }
             }
-            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Wing)
+            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.side)
             {
                 currentCartItems.RemoveAt(cartBox.SelectedIndex);
                 cartBox.Items.Remove(cartBox.SelectedItem);
                 for (int i = 0; i < currentCartItems.Count; i++)
                 {
-                    if (currentCartItems[i].category == MenuCategory.WingSide)
+                    if (currentCartItems[i].category == MenuCategory.sideTopping)
                     {
                         cartBox.Items.RemoveAt(i);
                         currentCartItems.RemoveAt(i);
                         i--;
                     }
                 }
+            }
+            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Drink)
+            {
+                currentCartItems.RemoveAt(cartBox.SelectedIndex);
+                cartBox.Items.Remove(cartBox.SelectedItem);
             }
         }
 
@@ -178,13 +219,13 @@ namespace PizzaProjectSWE
 
         private void wingListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (wingListBox.SelectedItems.Count > 0)
+            if (sideListBox.SelectedItems.Count > 0)
             {
-                wingToppings.Enabled = true;
+                sideToppings.Enabled = true;
             }
             else
             {
-                wingToppings.Enabled = false;
+                sideToppings.Enabled = false;
             }
         }
     }

@@ -10,8 +10,8 @@ namespace PizzaProjectSWE
     {
         Pizza, 
         PizzaTopping,
-        Wing, 
-        WingSide,
+        side, 
+        sideTopping,
         Drink
     }
 }
