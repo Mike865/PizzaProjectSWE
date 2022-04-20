@@ -16,6 +16,10 @@ namespace PizzaProjectSWE
         public MenuCategory category;
         public double cost;
         //Food constructor.
+        public Food()
+        {
+
+        }
         public Food(string theDescription, MenuCategory theCategory, double theCost)
         {
             description = theDescription;
@@ -33,7 +37,7 @@ namespace PizzaProjectSWE
             {
                 return "    $" + cost + " " + description;
             }
-            return "$"+ cost + " " + description;
+            return "$"+ cost + " "+ description;
         }
         
 

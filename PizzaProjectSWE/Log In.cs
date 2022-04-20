@@ -21,5 +21,26 @@ namespace PizzaProjectSWE
             AccountCreation createAccountForm = new AccountCreation();
             createAccountForm.ShowDialog();
         }
+
+        private void guestButton_Click(object sender, EventArgs e)
+        {
+            MenuForm.guestCheckout = true;
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void logInButton_Click(object sender, EventArgs e)
+        {
+            string userName = userNameBox.Text;
+            string passWord = passWordBox.Text;
+            if(MenuForm.customerManagerObject.LogInUserName(userName, passWord) == true)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("Incorrect input");
+            }
+            
+        }
     }
 }

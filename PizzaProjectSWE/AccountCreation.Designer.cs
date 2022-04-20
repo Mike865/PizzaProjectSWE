@@ -34,7 +34,7 @@ namespace PizzaProjectSWE
             this.label1 = new System.Windows.Forms.Label();
             this.userNameLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.createAccountButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.addressTextBox = new System.Windows.Forms.TextBox();
@@ -42,23 +42,32 @@ namespace PizzaProjectSWE
             this.usernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.paymentLabel = new System.Windows.Forms.Label();
+            this.cardNumBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dateBox = new System.Windows.Forms.TextBox();
+            this.cvvBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(12, 101);
+            this.nameLabel.Location = new System.Drawing.Point(9, 82);
+            this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(49, 17);
+            this.nameLabel.Size = new System.Drawing.Size(38, 13);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name:";
             // 
             // adressLabel
             // 
             this.adressLabel.AutoSize = true;
-            this.adressLabel.Location = new System.Drawing.Point(12, 149);
+            this.adressLabel.Location = new System.Drawing.Point(9, 121);
+            this.adressLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.adressLabel.Name = "adressLabel";
-            this.adressLabel.Size = new System.Drawing.Size(64, 17);
+            this.adressLabel.Size = new System.Drawing.Size(48, 13);
             this.adressLabel.TabIndex = 2;
             this.adressLabel.Text = "Address:";
             this.adressLabel.Click += new System.EventHandler(this.adressLabel_Click);
@@ -66,97 +75,175 @@ namespace PizzaProjectSWE
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 184);
+            this.label1.Location = new System.Drawing.Point(9, 150);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 17);
+            this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Phone Number:";
             // 
             // userNameLabel
             // 
             this.userNameLabel.AutoSize = true;
-            this.userNameLabel.Location = new System.Drawing.Point(12, 221);
+            this.userNameLabel.Location = new System.Drawing.Point(9, 180);
+            this.userNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.userNameLabel.Name = "userNameLabel";
-            this.userNameLabel.Size = new System.Drawing.Size(83, 17);
+            this.userNameLabel.Size = new System.Drawing.Size(63, 13);
             this.userNameLabel.TabIndex = 5;
             this.userNameLabel.Text = "User Name:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 259);
+            this.label2.Location = new System.Drawing.Point(9, 210);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(73, 17);
+            this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "Password:";
             // 
-            // button1
+            // createAccountButton
             // 
-            this.button1.Location = new System.Drawing.Point(54, 291);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(115, 28);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Create Account";
-            this.button1.UseVisualStyleBackColor = true;
+            this.createAccountButton.Location = new System.Drawing.Point(41, 344);
+            this.createAccountButton.Margin = new System.Windows.Forms.Padding(2);
+            this.createAccountButton.Name = "createAccountButton";
+            this.createAccountButton.Size = new System.Drawing.Size(86, 23);
+            this.createAccountButton.TabIndex = 7;
+            this.createAccountButton.Text = "Create Account";
+            this.createAccountButton.UseVisualStyleBackColor = true;
+            this.createAccountButton.Click += new System.EventHandler(this.createAccountButton_Click);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(186, 291);
+            this.cancelButton.Location = new System.Drawing.Point(190, 344);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(2);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(94, 28);
+            this.cancelButton.Size = new System.Drawing.Size(70, 23);
             this.cancelButton.TabIndex = 8;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(133, 101);
+            this.nameTextBox.Location = new System.Drawing.Point(100, 82);
+            this.nameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(147, 22);
+            this.nameTextBox.Size = new System.Drawing.Size(111, 20);
             this.nameTextBox.TabIndex = 9;
             // 
             // addressTextBox
             // 
-            this.addressTextBox.Location = new System.Drawing.Point(133, 144);
+            this.addressTextBox.Location = new System.Drawing.Point(100, 117);
+            this.addressTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.addressTextBox.Name = "addressTextBox";
-            this.addressTextBox.Size = new System.Drawing.Size(147, 22);
+            this.addressTextBox.Size = new System.Drawing.Size(111, 20);
             this.addressTextBox.TabIndex = 10;
             // 
             // phoneNumberTextBox
             // 
-            this.phoneNumberTextBox.Location = new System.Drawing.Point(133, 184);
+            this.phoneNumberTextBox.Location = new System.Drawing.Point(100, 150);
+            this.phoneNumberTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.phoneNumberTextBox.Name = "phoneNumberTextBox";
-            this.phoneNumberTextBox.Size = new System.Drawing.Size(147, 22);
+            this.phoneNumberTextBox.Size = new System.Drawing.Size(111, 20);
             this.phoneNumberTextBox.TabIndex = 11;
             // 
             // usernameTextBox
             // 
-            this.usernameTextBox.Location = new System.Drawing.Point(133, 215);
+            this.usernameTextBox.Location = new System.Drawing.Point(100, 175);
+            this.usernameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.Size = new System.Drawing.Size(147, 22);
+            this.usernameTextBox.Size = new System.Drawing.Size(111, 20);
             this.usernameTextBox.TabIndex = 12;
             // 
             // PasswordTextBox
             // 
-            this.PasswordTextBox.Location = new System.Drawing.Point(133, 253);
+            this.PasswordTextBox.Location = new System.Drawing.Point(100, 206);
+            this.PasswordTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(147, 22);
+            this.PasswordTextBox.PasswordChar = '*';
+            this.PasswordTextBox.Size = new System.Drawing.Size(111, 20);
             this.PasswordTextBox.TabIndex = 13;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(51, 52);
+            this.label3.Location = new System.Drawing.Point(38, 42);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(298, 17);
+            this.label3.Size = new System.Drawing.Size(222, 13);
             this.label3.TabIndex = 14;
             this.label3.Text = "Enter your information to create your account.";
             // 
+            // paymentLabel
+            // 
+            this.paymentLabel.AutoSize = true;
+            this.paymentLabel.Location = new System.Drawing.Point(97, 239);
+            this.paymentLabel.Name = "paymentLabel";
+            this.paymentLabel.Size = new System.Drawing.Size(106, 13);
+            this.paymentLabel.TabIndex = 15;
+            this.paymentLabel.Text = "Payment Information:";
+            // 
+            // cardNumBox
+            // 
+            this.cardNumBox.Location = new System.Drawing.Point(100, 255);
+            this.cardNumBox.Name = "cardNumBox";
+            this.cardNumBox.Size = new System.Drawing.Size(111, 20);
+            this.cardNumBox.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(38, 262);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(42, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Card #:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 288);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(82, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Expiration Date:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(34, 317);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "CVV:";
+            // 
+            // dateBox
+            // 
+            this.dateBox.Location = new System.Drawing.Point(100, 288);
+            this.dateBox.Name = "dateBox";
+            this.dateBox.Size = new System.Drawing.Size(111, 20);
+            this.dateBox.TabIndex = 20;
+            // 
+            // cvvBox
+            // 
+            this.cvvBox.Location = new System.Drawing.Point(131, 317);
+            this.cvvBox.Name = "cvvBox";
+            this.cvvBox.Size = new System.Drawing.Size(52, 20);
+            this.cvvBox.TabIndex = 21;
+            // 
             // AccountCreation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 331);
+            this.ClientSize = new System.Drawing.Size(314, 412);
+            this.Controls.Add(this.cvvBox);
+            this.Controls.Add(this.dateBox);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cardNumBox);
+            this.Controls.Add(this.paymentLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.PasswordTextBox);
             this.Controls.Add(this.usernameTextBox);
@@ -164,12 +251,13 @@ namespace PizzaProjectSWE
             this.Controls.Add(this.addressTextBox);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.createAccountButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.userNameLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.adressLabel);
             this.Controls.Add(this.nameLabel);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AccountCreation";
             this.Text = "AccountCreation";
             this.ResumeLayout(false);
@@ -184,7 +272,7 @@ namespace PizzaProjectSWE
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label userNameLabel;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button createAccountButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.TextBox addressTextBox;
@@ -192,5 +280,12 @@ namespace PizzaProjectSWE
         private System.Windows.Forms.TextBox usernameTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label paymentLabel;
+        private System.Windows.Forms.TextBox cardNumBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox dateBox;
+        private System.Windows.Forms.TextBox cvvBox;
     }
 }

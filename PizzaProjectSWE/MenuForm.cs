@@ -11,9 +11,13 @@ using System.Windows.Forms;
 namespace PizzaProjectSWE
 {
     
-    public partial class Form1 : Form
+    public partial class MenuForm : Form
     {
         List<Food> menuList = new List<Food>();
+        private List<Food> currentCartItems = new List<Food>();
+        public static CustomerManager customerManagerObject = new CustomerManager();
+        public static bool guestCheckout { get; set; }
+        
         #region
         public void loadMenu()
         {
@@ -53,7 +57,7 @@ namespace PizzaProjectSWE
                 }
             }
         }
-        public Form1()
+        public MenuForm()
         {
             InitializeComponent();
         }
@@ -62,22 +66,29 @@ namespace PizzaProjectSWE
         {
             Log_In logInForm = new Log_In();
             logInForm.ShowDialog();
+            if(logInForm.DialogResult == DialogResult.OK)
+            {
+                customerLabel.Text = customerManagerObject.currentCustomer.Name;
+            }
             loadMenu();
             populateMenuGUI();
         }
 
-        private void baseFood_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
             //adds items to cart
             cartBox.Items.Add(pizzaListBox.SelectedItem.ToString());
+            Food currentFood = new Food();
+            currentFood.category = MenuCategory.Pizza;
+            currentCartItems.Add(currentFood);
             foreach(int i in pizzaToppingListBox.SelectedIndices)
             {
+                Food currentTopping = new Food();
+                currentTopping.category = MenuCategory.PizzaTopping;
                 cartBox.Items.Add(pizzaToppingListBox.Items[i].ToString());
+                currentCartItems.Add(currentTopping);
             }
             pizzaListBox.ClearSelected();
             pizzaToppingListBox.ClearSelected();
@@ -88,9 +99,14 @@ namespace PizzaProjectSWE
         {
             //adds items to cart
             cartBox.Items.Add(wingListBox.SelectedItem.ToString());
-            foreach(int i in wingToppings.SelectedIndices)
+            Food currentFood = new Food();
+            currentFood.category = MenuCategory.Wing;
+            foreach (int i in wingToppings.SelectedIndices)
             {
-                cartBox.Items.Add(pizzaToppingListBox.Items[i].ToString());
+                Food currentTopping = new Food();
+                currentTopping.category = MenuCategory.WingSide;
+                cartBox.Items.Add(wingToppings.Items[i].ToString());
+                currentCartItems.Add(currentTopping);
             }
             wingListBox.ClearSelected();
             wingToppings.ClearSelected();
@@ -107,7 +123,68 @@ namespace PizzaProjectSWE
         }
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            cartBox.Items.Remove(cartBox.SelectedItem);
+            if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Pizza)
+            {
+                currentCartItems.RemoveAt(cartBox.SelectedIndex);
+                cartBox.Items.Remove(cartBox.SelectedItem);
+                for (int i = 0; i < currentCartItems.Count; i++)
+                {
+                    if (currentCartItems[i].category == MenuCategory.PizzaTopping)
+                    {
+                        cartBox.Items.RemoveAt(i);
+                        currentCartItems.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Wing)
+            {
+                currentCartItems.RemoveAt(cartBox.SelectedIndex);
+                cartBox.Items.Remove(cartBox.SelectedItem);
+                for (int i = 0; i < currentCartItems.Count; i++)
+                {
+                    if (currentCartItems[i].category == MenuCategory.WingSide)
+                    {
+                        cartBox.Items.RemoveAt(i);
+                        currentCartItems.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        private void pizzaToppingListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pizzaListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(pizzaListBox.SelectedItems.Count > 0)
+            {
+                pizzaToppingListBox.Enabled = true;
+            }
+            else
+            {
+                pizzaToppingListBox.Enabled = false;
+            }
+        }
+
+        private void cartBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void wingListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (wingListBox.SelectedItems.Count > 0)
+            {
+                wingToppings.Enabled = true;
+            }
+            else
+            {
+                wingToppings.Enabled = false;
+            }
         }
     }
 }

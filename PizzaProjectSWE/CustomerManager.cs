@@ -15,13 +15,14 @@ namespace PizzaProjectSWE
      * CustomerID
      */
     [Serializable]
-    internal class CustomerManager
+    public class CustomerManager
     {
         // implement setters and getters
         // methods are not tested
 
 
         private List<Customer> _customerList = new List<Customer>();
+        public Customer currentCustomer { get; set; }
 
         public CustomerManager()
         {
@@ -31,6 +32,7 @@ namespace PizzaProjectSWE
 
         public Boolean addCustomer(string n, string a, string num, string p, string u)
         {
+            //Could we throw an exception instead of returning t/f. Because then we have to check the return value and may cause other issues. 
             // Add Customer to the _customerList
             foreach (Customer c in _customerList)
             {
@@ -68,20 +70,22 @@ namespace PizzaProjectSWE
             return true;
         }
 
-        public Customer LogInUserName(string u, string p)
+        public bool LogInUserName(string u, string p)
         {
+            //changed return types 
             foreach (Customer c in _customerList)
             {
                 if (u == c.UserName & p == c.Password)
                 {
-                    return c;
+                    currentCustomer = c;
+                    return true;
                 }
             }
-            return _customerList[0];
+            return false;
         }
 
 
-        internal class Customer
+        public class Customer
         {
             private static int _customerID = 0;
             public int CustomerID { get; private set; }
