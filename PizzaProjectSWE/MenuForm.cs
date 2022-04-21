@@ -91,11 +91,51 @@ namespace PizzaProjectSWE
                 }
             }
         }
+        public double computePrice(string theItem)
+        {
+            double total = 0;
+            foreach(Food c in menuList)
+            {
+                if(theItem == "    $" + c.cost + " " + c.description)
+                {
+                    total = c.cost;
+                }
+                else if(theItem == "    $" + c.cost + " " + c.description)
+                {
+                    total = c.cost;
+                }
+                else if(theItem == "$" + c.cost + " " + c.description)
+                {
+                    total = c.cost;
+                }
+            }
+            return total;
+            
+        }
+        public double computeTotal(ListBox theCart)
+        {
+            double orderTotal = 0;
+            foreach(string c in theCart.Items)
+            {
+                orderTotal += computePrice(c);
+            }
+            totalLabel.Text = orderTotal.ToString();
+            return orderTotal;
+        }
         public MenuForm()
         {
             InitializeComponent();
         }
-        
+        public void initiateLogIn()
+        {
+            Log_In logInForm = new Log_In();
+            logInForm.ShowDialog();
+            if (logInForm.DialogResult == DialogResult.OK)
+            {
+                customerLabel.Text = customerManagerObject.currentCustomer.Name;
+                logInButton.Enabled = false;
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             Log_In logInForm = new Log_In();
@@ -103,6 +143,7 @@ namespace PizzaProjectSWE
             if(logInForm.DialogResult == DialogResult.OK)
             {
                 customerLabel.Text = customerManagerObject.currentCustomer.Name;
+                logInButton.Enabled = false;
             }
             loadMenu();
             populateMenuGUI();
@@ -126,7 +167,8 @@ namespace PizzaProjectSWE
             }
             pizzaListBox.ClearSelected();
             pizzaToppingListBox.ClearSelected();
-            
+            computeTotal(cartBox);
+
         }
 
         private void addWingButton_Click(object sender, EventArgs e)
@@ -143,6 +185,7 @@ namespace PizzaProjectSWE
                 cartBox.Items.Add(sideToppings.Items[i].ToString());
                 currentCartItems.Add(currentTopping);
             }
+            computeTotal(cartBox);
             sideListBox.ClearSelected();
             sideToppings.ClearSelected();
         }
@@ -156,6 +199,7 @@ namespace PizzaProjectSWE
             {
                 cartBox.Items.Add(drinkListBox.Items[i].ToString());
             }
+            computeTotal(cartBox);
             drinkListBox.ClearSelected();
         }
         private void deleteButton_Click(object sender, EventArgs e)
@@ -193,6 +237,7 @@ namespace PizzaProjectSWE
                 currentCartItems.RemoveAt(cartBox.SelectedIndex);
                 cartBox.Items.Remove(cartBox.SelectedItem);
             }
+            computeTotal(cartBox);
         }
 
         private void pizzaToppingListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -227,6 +272,27 @@ namespace PizzaProjectSWE
             {
                 sideToppings.Enabled = false;
             }
+        }
+
+        private void customerLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logInButton_Click(object sender, EventArgs e)
+        {
+            initiateLogIn();
+        }
+
+        private void checkoutButton_Click(object sender, EventArgs e)
+        {
+            Checkout checkoutForm = new Checkout();
+            checkoutForm.total = computeTotal(cartBox);
+            foreach(string c in cartBox.Items)
+            {
+                checkoutForm.theList.Add(c);
+            }
+            checkoutForm.ShowDialog();
         }
     }
 }
