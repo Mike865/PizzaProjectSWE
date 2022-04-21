@@ -70,7 +70,6 @@ namespace PizzaProjectSWE
             this.adressLabel.Size = new System.Drawing.Size(48, 13);
             this.adressLabel.TabIndex = 2;
             this.adressLabel.Text = "Address:";
-            this.adressLabel.Click += new System.EventHandler(this.adressLabel_Click);
             // 
             // label1
             // 
@@ -260,6 +259,7 @@ namespace PizzaProjectSWE
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AccountCreation";
             this.Text = "AccountCreation";
+            
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -139,6 +139,7 @@ namespace PizzaProjectSWE
             this.MaximizeBox = false;
             this.Name = "Log_In";
             this.Text = "Log_In";
+           
             this.ResumeLayout(false);
             this.PerformLayout();
 

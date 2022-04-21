@@ -38,6 +38,8 @@ namespace PizzaProjectSWE
             this.sideToppings = new System.Windows.Forms.ListBox();
             this.sideListBox = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.totalLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.checkoutButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.cartBox = new System.Windows.Forms.ListBox();
@@ -46,8 +48,7 @@ namespace PizzaProjectSWE
             this.drinkListBox = new System.Windows.Forms.ListBox();
             this.customerLabel = new System.Windows.Forms.Label();
             this.logInButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.totalLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pizzaBox.SuspendLayout();
             this.wingBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -65,6 +66,7 @@ namespace PizzaProjectSWE
             // 
             // pizzaBox
             // 
+            this.pizzaBox.Controls.Add(this.label2);
             this.pizzaBox.Controls.Add(this.addPizzaButton);
             this.pizzaBox.Controls.Add(this.pizzaToppingListBox);
             this.pizzaBox.Controls.Add(this.pizzaListBox);
@@ -94,7 +96,7 @@ namespace PizzaProjectSWE
             this.pizzaToppingListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.pizzaToppingListBox.Size = new System.Drawing.Size(183, 160);
             this.pizzaToppingListBox.TabIndex = 1;
-            this.pizzaToppingListBox.SelectedIndexChanged += new System.EventHandler(this.pizzaToppingListBox_SelectedIndexChanged);
+            
             // 
             // wingBox
             // 
@@ -151,6 +153,24 @@ namespace PizzaProjectSWE
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cart";
             // 
+            // totalLabel
+            // 
+            this.totalLabel.AutoSize = true;
+            this.totalLabel.Location = new System.Drawing.Point(251, 187);
+            this.totalLabel.Name = "totalLabel";
+            this.totalLabel.Size = new System.Drawing.Size(28, 13);
+            this.totalLabel.TabIndex = 4;
+            this.totalLabel.Text = "0.00";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(138, 187);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Order Total:";
+            // 
             // checkoutButton
             // 
             this.checkoutButton.Location = new System.Drawing.Point(219, 212);
@@ -178,7 +198,7 @@ namespace PizzaProjectSWE
             this.cartBox.Name = "cartBox";
             this.cartBox.Size = new System.Drawing.Size(206, 160);
             this.cartBox.TabIndex = 0;
-            this.cartBox.SelectedIndexChanged += new System.EventHandler(this.cartBox_SelectedIndexChanged);
+            
             // 
             // drinkBox
             // 
@@ -217,7 +237,7 @@ namespace PizzaProjectSWE
             this.customerLabel.Size = new System.Drawing.Size(35, 13);
             this.customerLabel.TabIndex = 5;
             this.customerLabel.Text = "Guest";
-            this.customerLabel.Click += new System.EventHandler(this.customerLabel_Click);
+            
             // 
             // logInButton
             // 
@@ -229,23 +249,14 @@ namespace PizzaProjectSWE
             this.logInButton.UseVisualStyleBackColor = true;
             this.logInButton.Click += new System.EventHandler(this.logInButton_Click);
             // 
-            // label1
+            // label2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(138, 187);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Order Total:";
-            // 
-            // totalLabel
-            // 
-            this.totalLabel.AutoSize = true;
-            this.totalLabel.Location = new System.Drawing.Point(251, 187);
-            this.totalLabel.Name = "totalLabel";
-            this.totalLabel.Size = new System.Drawing.Size(28, 13);
-            this.totalLabel.TabIndex = 4;
-            this.totalLabel.Text = "0.00";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(104, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Create Pizza\'s below";
             // 
             // MenuForm
             // 
@@ -263,6 +274,7 @@ namespace PizzaProjectSWE
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pizzaBox.ResumeLayout(false);
+            this.pizzaBox.PerformLayout();
             this.wingBox.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -293,6 +305,7 @@ namespace PizzaProjectSWE
         private System.Windows.Forms.Button logInButton;
         private System.Windows.Forms.Label totalLabel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
