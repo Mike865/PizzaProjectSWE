@@ -34,7 +34,6 @@ namespace PizzaProjectSWE
             this.userNameBox = new System.Windows.Forms.TextBox();
             this.passWordBox = new System.Windows.Forms.TextBox();
             this.clearButton = new System.Windows.Forms.Button();
-            this.forgotPassword = new System.Windows.Forms.Button();
             this.userNameLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,7 +52,7 @@ namespace PizzaProjectSWE
             // 
             // guestButton
             // 
-            this.guestButton.Location = new System.Drawing.Point(88, 233);
+            this.guestButton.Location = new System.Drawing.Point(88, 204);
             this.guestButton.Name = "guestButton";
             this.guestButton.Size = new System.Drawing.Size(156, 23);
             this.guestButton.TabIndex = 1;
@@ -85,15 +84,6 @@ namespace PizzaProjectSWE
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
             // 
-            // forgotPassword
-            // 
-            this.forgotPassword.Location = new System.Drawing.Point(88, 204);
-            this.forgotPassword.Name = "forgotPassword";
-            this.forgotPassword.Size = new System.Drawing.Size(156, 23);
-            this.forgotPassword.TabIndex = 5;
-            this.forgotPassword.Text = "Forgot Password";
-            this.forgotPassword.UseVisualStyleBackColor = true;
-            // 
             // userNameLabel
             // 
             this.userNameLabel.AutoSize = true;
@@ -124,7 +114,7 @@ namespace PizzaProjectSWE
             // createAccount
             // 
             this.createAccount.Location = new System.Drawing.Point(88, 180);
-            this.createAccount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.createAccount.Margin = new System.Windows.Forms.Padding(2);
             this.createAccount.Name = "createAccount";
             this.createAccount.Size = new System.Drawing.Size(156, 19);
             this.createAccount.TabIndex = 9;
@@ -141,7 +131,6 @@ namespace PizzaProjectSWE
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.userNameLabel);
-            this.Controls.Add(this.forgotPassword);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.passWordBox);
             this.Controls.Add(this.userNameBox);
@@ -162,7 +151,6 @@ namespace PizzaProjectSWE
         private System.Windows.Forms.TextBox userNameBox;
         private System.Windows.Forms.TextBox passWordBox;
         private System.Windows.Forms.Button clearButton;
-        private System.Windows.Forms.Button forgotPassword;
         private System.Windows.Forms.Label userNameLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
