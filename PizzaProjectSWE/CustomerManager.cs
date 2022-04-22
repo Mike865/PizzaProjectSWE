@@ -20,6 +20,7 @@ namespace PizzaProjectSWE
 
         private List<Customer> _customerList = new List<Customer>();
         public Customer currentCustomer { get; set; }
+        private static int orderNumber {get; set;}
 
         /// <summary>
         /// Method utilized Packages Newtson.Json.Serialized object to convert _customerList obj into string
@@ -30,6 +31,16 @@ namespace PizzaProjectSWE
         public string getJson()
         {
             return JsonConvert.SerializeObject(_customerList);
+        }
+
+        public Customer GetCustomerObj(int i)
+        {
+            if ( i > _customerList.Count)
+            {
+                Console.WriteLine("There is no customer for that index. Returning Null customer");
+                return _customerList[0];
+            }
+            return _customerList[i];
         }
 
         public CustomerManager()
@@ -250,22 +261,28 @@ namespace PizzaProjectSWE
                     return;
                 }
                 Cart = new Order();
-                foreach (Food f in foods)
-                {
-                    Cart.addFood(f);
-                }
+                
 
             }
 
-            public void CheckOut()
+            public string GetJson()
             {
-                if (Cart.FoodItems.Count == 0)
+                return JsonConvert.SerializeObject(this);
+            }
+
+            public void CheckOut(List<Food> foods)
+            {
+                if (foods.Count == 0)
                 {
-                    // Say something about there being nothing in the cart
                     return;
                 }
+                Order o = new Order();
+                foreach(Food f in foods)
+                {
+                    o.addFood(f);
+                }
 
-                Orders.Add(Cart);
+                this.Orders.Add(o);
             }
 
             public PaymentInformation _pi;
@@ -320,14 +337,13 @@ namespace PizzaProjectSWE
 
         public class Order
         {
-            private static int _orderNumber = 0;
-            public int orderNumberInt;
+            public int orderNumber;
             public double orderTotal;
             public List<Food> FoodItems = new List<Food>();
 
             public Order()
             {
-                orderNumberInt = _orderNumber++;
+                orderNumber = CustomerManager.orderNumber++;
                 orderTotal = 0;
             }
 
@@ -345,22 +361,6 @@ namespace PizzaProjectSWE
                 orderTotal += food.cost;
             }
 
-
-        }
-
-        //public bool saveInfo()
-        //{
-        //    Console.WriteLine(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath));
-        //    File f = new File(_filename);
-        //    Stream str = f.Open(FileMode.Create);
-        //    BinaryFormatter bf = new BinaryFormatter();
-        //    bf.Serialize(str, this);
-        //    str.Close();
-        //    return true;
-        //}
-
-        public class PaymentMethods
-        {
 
         }
     }

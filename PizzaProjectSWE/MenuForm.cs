@@ -21,7 +21,8 @@ namespace PizzaProjectSWE
         ///The currentCartItems list allows us to identify if we need to delete the toppings are sides assosiacted with that Food object.
         /// </summary>
 
-        private List<Food> currentCartItems = new List<Food>();
+        internal List<Food> currentCartItems = new List<Food>();
+        private bool DEBUG_CHECKOUT = false;
         /// <summary>
         /// This static customerManagerObject allows us to access all the methods inside of the class from any form. 
         /// </summary>
@@ -31,6 +32,7 @@ namespace PizzaProjectSWE
         /// Creating an account or logging into a current account.
         /// </summary>
         public static bool guestCheckout { get; set; }
+        
         /// <summary>
         /// The region below hides the loadMenu method.
         /// This menu hard codes each item into the menuList so we can display it to the users.
@@ -115,24 +117,33 @@ namespace PizzaProjectSWE
         /// </summary>
         public void populateMenuGUI()
         {
+            if (DEBUG_CHECKOUT)
+            {
+                customerManagerObject.addCustomer("name", "1", "2", "p", "u");
+                customerManagerObject.currentCustomer = customerManagerObject.GetCustomerObj(1);
+            }
+            pizzaListBox.DisplayMember = "displayMember";
+            pizzaToppingListBox.DisplayMember = "displayMember";
+            sideListBox.DisplayMember = "displayMember";
+            sideToppings.DisplayMember = "displayMember";
             foreach (Food c in menuList)
             {
                 switch(c.category)
                 {
                     case MenuCategory.Pizza:
-                        pizzaListBox.Items.Add(c.ToString());
+                        pizzaListBox.Items.Add(c);
                         break;
                     case MenuCategory.PizzaTopping:
-                        pizzaToppingListBox.Items.Add(c.ToString());
+                        pizzaToppingListBox.Items.Add(c);
                         break;
                     case MenuCategory.side:
-                        sideListBox.Items.Add(c.ToString());
+                        sideListBox.Items.Add(c);
                         break;
                     case MenuCategory.sideTopping:
-                        sideToppings.Items.Add(c.ToString());
+                        sideToppings.Items.Add(c);
                         break;
                     case MenuCategory.Drink:
-                        drinkListBox.Items.Add(c.ToString());
+                        drinkListBox.Items.Add(c);
                         break;
                 }
             }
@@ -161,6 +172,16 @@ namespace PizzaProjectSWE
                 {
                     total = c.cost;
                 }
+            }
+            return total;
+        }
+
+        public double computeTotal(List<Food> cart)
+        {
+            double total = 0;
+            foreach(Food f in cart)
+            {
+                total += f.cost;
             }
             return total;
         }
@@ -232,15 +253,11 @@ namespace PizzaProjectSWE
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
             cartBox.Items.Add(pizzaListBox.SelectedItem.ToString());
-            Food currentFood = new Food();
-            currentFood.category = MenuCategory.Pizza;
-            currentCartItems.Add(currentFood);
+            currentCartItems.Add((Food)pizzaListBox.SelectedItem);
             foreach(int i in pizzaToppingListBox.SelectedIndices)
             {
-                Food currentTopping = new Food();
-                currentTopping.category = MenuCategory.PizzaTopping;
                 cartBox.Items.Add(pizzaToppingListBox.Items[i].ToString());
-                currentCartItems.Add(currentTopping);
+                currentCartItems.Add((Food)pizzaToppingListBox.Items[i]);
             }
             pizzaListBox.ClearSelected();
             pizzaToppingListBox.ClearSelected();
@@ -259,15 +276,11 @@ namespace PizzaProjectSWE
         private void addWingButton_Click(object sender, EventArgs e)
         {
             cartBox.Items.Add(sideListBox.SelectedItem.ToString());
-            Food currentFood = new Food();
-            currentFood.category = MenuCategory.side;
-            currentCartItems.Add(currentFood);
+            currentCartItems.Add((Food) sideListBox.SelectedItem);
             foreach (int i in sideToppings.SelectedIndices)
             {
-                Food currentTopping = new Food();
-                currentTopping.category = MenuCategory.sideTopping;
                 cartBox.Items.Add(sideToppings.Items[i].ToString());
-                currentCartItems.Add(currentTopping);
+                currentCartItems.Add((Food)sideToppings.Items[i]);
             }
             computeTotal(cartBox);
             sideListBox.ClearSelected();
@@ -283,12 +296,12 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void addDrinkButton_Click(object sender, EventArgs e)
         {
-            Food currentFood = new Food();
-            currentFood.category = MenuCategory.Drink;
-            currentCartItems.Add(currentFood);
+
+            //currentCartItems.Add(currentFood);
             foreach (int i in drinkListBox.SelectedIndices)
             {
                 cartBox.Items.Add(drinkListBox.Items[i].ToString());
+                currentCartItems.Add((Food) drinkListBox.Items[i]);
             }
             computeTotal(cartBox);
             drinkListBox.ClearSelected();
@@ -390,18 +403,24 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void checkoutButton_Click(object sender, EventArgs e)
         {
+            customerManagerObject.currentCustomer.CheckOut(currentCartItems);
+            if (DEBUG_CHECKOUT)
+            {
+                Console.Write(customerManagerObject.currentCustomer.GetJson());
+            }
             Checkout checkoutForm = new Checkout();
-            checkoutForm.total = computeTotal(cartBox);
-            foreach(string c in cartBox.Items)
+            checkoutForm.total = computeTotal(currentCartItems);
+            foreach (string c in cartBox.Items)
             {
                 checkoutForm.theListOfCurrentFoodItems.Add(c);
             }
             checkoutForm.ShowDialog();
-            if(checkoutForm.DialogResult == DialogResult.OK)
+            if (checkoutForm.DialogResult == DialogResult.OK)
             {
                 cartBox.Items.Clear();
             }
-            computeTotal(cartBox);
+
+            computeTotal(currentCartItems);
         }
     }
 }
