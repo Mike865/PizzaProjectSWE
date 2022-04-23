@@ -356,6 +356,15 @@ namespace PizzaProjectSWE
                 _pi = new PaymentInformation(cardnumber, expDate);
             }
 
+            public String GetRecentOrder()
+            {
+                if (Orders.Count == 0)
+                {
+                    return "There are no orders to return";
+                }
+                return Orders[Orders.Count - 1].GetJson();
+            }
+
             public class PaymentInformation
             {
                 public string cardNumber = "";
@@ -386,6 +395,11 @@ namespace PizzaProjectSWE
                 {
                     Console.WriteLine(String.Format("{0}: {1} \t\t\t{3}", food.category, food.description, food.cost));
                 }
+            }
+
+            public string GetJson()
+            {
+                return JsonConvert.SerializeObject(this);
             }
 
             public void addFood(Food food)
