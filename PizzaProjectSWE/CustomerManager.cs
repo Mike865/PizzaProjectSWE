@@ -35,7 +35,7 @@ namespace PizzaProjectSWE
 
         public Customer GetCustomerObj(int i)
         {
-            if ( i > _customerList.Count)
+            if ( i > _customerList.Count || i < 0)
             {
                 Console.WriteLine("There is no customer for that index. Returning Null customer");
                 return _customerList[0];
@@ -94,6 +94,21 @@ namespace PizzaProjectSWE
                 }
             }
             _customerList.Add(new Customer(n, a, num, p, u));
+            return true;
+        }
+
+        public Boolean addCustomer(string n, string a, string num, string p, string u, string card, string date)
+        {
+            //Could we throw an exception instead of returning t/f. Because then we have to check the return value and may cause other issues. 
+            // Add Customer to the _customerList
+            foreach (Customer c in _customerList)
+            {
+                if (c.UserName == u || c.Number == num)
+                {
+                    return false;
+                }
+            }
+            _customerList.Add(new Customer(n, a, num, p, u, card, date));
             return true;
         }
 
@@ -193,6 +208,11 @@ namespace PizzaProjectSWE
         /// </summary>
         public void LoadCustomerInformation()
         {
+            if (!File.Exists("CustomerInfo.txt"))
+            {
+                Console.WriteLine("The Customer Info file cannot be found");
+                return;
+            }
             IList<Customer> CustomerInfo;
             string[] jsonEnum = File.ReadAllLines("CustomerInfo.txt");
             string json = String.Join("\n", jsonEnum);
@@ -246,6 +266,8 @@ namespace PizzaProjectSWE
 
             private Order Cart;
 
+            public PaymentInformation _pi;
+
             public List<Order> Orders = new List<Order>();
 
             /// <summary>
@@ -285,8 +307,6 @@ namespace PizzaProjectSWE
                 this.Orders.Add(o);
             }
 
-            public PaymentInformation _pi;
-
             /// <summary>
             /// allows payment information to be saved 
             /// </summary>
@@ -323,6 +343,19 @@ namespace PizzaProjectSWE
                 CustomerID = _customerID++;
                 UserName = u;
             }
+
+            public Customer(string n, string a, string num, string p, string u, string cardnumber, string expDate)
+            {
+
+                Name = n;
+                Address = a;
+                Number = num;
+                Password = p;
+                CustomerID = _customerID++;
+                UserName = u;
+                _pi = new PaymentInformation(cardnumber, expDate);
+            }
+
             public class PaymentInformation
             {
                 public string cardNumber = "";
