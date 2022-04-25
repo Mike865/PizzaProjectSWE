@@ -21,12 +21,12 @@ namespace PizzaProjectSWE
         ///The currentCartItems list allows us to identify if we need to delete the toppings are sides assosiacted with that Food object.
         /// </summary>
 
-        internal List<Food> currentCartItems = new List<Food>();
+        public static List<Food> currentCartItems = new List<Food>();
         private bool DEBUG_CHECKOUT = false;
         /// <summary>
         /// This static customerManagerObject allows us to access all the methods inside of the class from any form. 
         /// </summary>
-        public static CustomerManager customerManagerObject = new CustomerManager();
+        public static CustomerManager customerManagerObject = Log_In.customerManagerObject;
         /// <summary>
         /// guestCheckout is a static bool that allows us to check if the user selected to checkout as a guest instead of.
         /// Creating an account or logging into a current account.
@@ -119,8 +119,9 @@ namespace PizzaProjectSWE
         {
             if (DEBUG_CHECKOUT)
             {
-                customerManagerObject.addCustomer("name", "1", "2", "p", "u");
-                customerManagerObject.currentCustomer = customerManagerObject.GetCustomerObj(1);
+                //customerManagerObject.addCustomer("name", "1", "2", "p", "u");
+                customerManagerObject.currentCustomer = customerManagerObject.addCustomer("name", "1", "2", "p", "u");
+                customerManagerObject.LoadCustomerInformation();
             }
             pizzaListBox.DisplayMember = "displayMember";
             pizzaToppingListBox.DisplayMember = "displayMember";
@@ -183,6 +184,7 @@ namespace PizzaProjectSWE
             {
                 total += f.cost;
             }
+            totalLabel.Text = total.ToString();
             return total;
         }
         /// <computeTotal>
@@ -252,6 +254,8 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
+            if (pizzaListBox.SelectedIndex == -1)
+                return;
             cartBox.Items.Add(pizzaListBox.SelectedItem.ToString());
             currentCartItems.Add((Food)pizzaListBox.SelectedItem);
             foreach(int i in pizzaToppingListBox.SelectedIndices)
@@ -275,6 +279,8 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void addWingButton_Click(object sender, EventArgs e)
         {
+            if (sideListBox.SelectedIndex == -1)
+                return;
             cartBox.Items.Add(sideListBox.SelectedItem.ToString());
             currentCartItems.Add((Food) sideListBox.SelectedItem);
             foreach (int i in sideToppings.SelectedIndices)
@@ -317,6 +323,10 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void deleteButton_Click(object sender, EventArgs e)
         {
+            if (currentCartItems.Count == 0 || cartBox.SelectedIndex == -1 )
+            {
+                return;
+            }
             if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Pizza)
             {
                 currentCartItems.RemoveAt(cartBox.SelectedIndex);
@@ -345,12 +355,24 @@ namespace PizzaProjectSWE
                     }
                 }
             }
+            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.PizzaTopping)
+            {
+                currentCartItems.RemoveAt(cartBox.SelectedIndex);
+                cartBox.Items.RemoveAt(cartBox.SelectedIndex);
+            }
+
+            else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.sideTopping)
+            {
+                currentCartItems.RemoveAt(cartBox.SelectedIndex);
+                cartBox.Items.RemoveAt(cartBox.SelectedIndex);
+            }
+
             else if (currentCartItems[cartBox.SelectedIndex].category == MenuCategory.Drink)
             {
                 currentCartItems.RemoveAt(cartBox.SelectedIndex);
                 cartBox.Items.Remove(cartBox.SelectedItem);
             }
-            computeTotal(cartBox);
+            computeTotal(currentCartItems);
         }
         /// <pizzaListBox_SelectedIndexChanged>
         /// This event allows enables the topping list box if the customer selects a base pizza.
@@ -403,10 +425,11 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void checkoutButton_Click(object sender, EventArgs e)
         {
-            customerManagerObject.currentCustomer.CheckOut(currentCartItems);
             if (DEBUG_CHECKOUT)
             {
-                Console.Write(customerManagerObject.currentCustomer.GetJson());
+                Console.WriteLine(customerManagerObject.currentCustomer.GetJson());
+                Console.WriteLine(customerManagerObject.currentCustomer.GetRecentOrder());
+                customerManagerObject.SaveInformation();
             }
             Checkout checkoutForm = new Checkout();
             checkoutForm.total = computeTotal(currentCartItems);
@@ -421,6 +444,11 @@ namespace PizzaProjectSWE
             }
 
             computeTotal(currentCartItems);
+        }
+
+        private void MenuForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            customerManagerObject.SaveInformation();
         }
     }
 }

@@ -177,15 +177,19 @@ namespace PizzaProjectSWE
         /// This method finalized the order.
         /// It checks if they want carryout or delivery.
         /// Then depending on if they are logged in or a guest
-        /// it gives shows a message box if the order was successfully placed. 
+        /// it gives shows a message box if the order was successfully placed. cyrr
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void confirmCheckoutButton_Click(object sender, EventArgs e)
         {
+
             bool delivery = deliveryOrder();
             bool carryOut = carryOutOrder();
 
+
+            if (MenuForm.customerManagerObject.currentCustomer != MenuForm.customerManagerObject.GetCustomerObj(0))
+                MenuForm.customerManagerObject.currentCustomer.Checkout(MenuForm.currentCartItems);
             if (MenuForm.guestCheckout == true)
             {
                 if (delivery == true)

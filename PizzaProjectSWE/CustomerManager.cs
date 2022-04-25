@@ -66,6 +66,8 @@ namespace PizzaProjectSWE
                     return true;
                 }
             }
+
+            currentCustomer = GetCustomerObj(0);
             return false;
         }
 

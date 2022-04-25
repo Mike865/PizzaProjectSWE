@@ -48,6 +48,7 @@ namespace PizzaProjectSWE
         private void guestButton_Click(object sender, EventArgs e)
         {
             MenuForm.guestCheckout = true;
+            customerManagerObject.currentCustomer = customerManagerObject.GetCustomerObj(0);
             DialogResult = DialogResult.Cancel;
         }
         /// <LogInButton_Click>
