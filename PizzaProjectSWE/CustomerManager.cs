@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PizzaProjectSWE
 {
@@ -15,138 +16,45 @@ namespace PizzaProjectSWE
      * CustomerID
      */
     [Serializable]
+
     public class CustomerManager
     {
-
-        private List<Customer> _customerList = new List<Customer>();
+        public List<Customer> _customerList { get; set; }
         public Customer currentCustomer { get; set; }
-        private static int orderNumber {get; set;}
-
-        /// <summary>
-        /// Method utilized Packages Newtson.Json.Serialized object to convert _customerList obj into string
-        /// </summary>
-        /// <returns>
-        /// a string that is a json representation of the method
-        /// </returns>
-        public string getJson()
+        //private int _customerCounter { get; set; }
+        public string GetJson()
         {
-            return JsonConvert.SerializeObject(_customerList);
+            return JsonConvert.SerializeObject(this);
+        }
+
+        public CustomerManager(string s)
+        {
+            initObjects();
+        }
+
+        public CustomerManager()
+        {
+            initObjects();
+            if (!CheckforCustomerInfo())
+            {
+                addCustomer("null_name", "null_address", "number_num", "password", "someuserName", "1234CardNum", "01/2023Date");
+            }
+        }
+        public CustomerManager(bool DEBUG)
+        {
+            initObjects();
+            LoadCustomerInformation();
         }
 
         public Customer GetCustomerObj(int i)
         {
-            if ( i > _customerList.Count || i < 0)
+            if (i < 0 || i > _customerList.Count - 1)
             {
-                Console.WriteLine("There is no customer for that index. Returning Null customer");
                 return _customerList[0];
             }
             return _customerList[i];
         }
 
-        public CustomerManager()
-        {
-            ///Intialize customer with a null customer
-            _customerList.Add(new Customer("null", "null", "null_num", "null", "null_user"));
-        }
-
-        /// <summary>
-        /// Load Customer Information
-        /// </summary>
-        /// <param name="restored">
-        /// restored so far is a dummy variable that tells the program to look for a CustomerInfo.txt file</param>
-        public CustomerManager(bool restored)
-        {
-
-            LoadCustomerInformation();
-        }
-
-        /// <summary>
-        /// Adds a new Customer object to the _customerList
-        /// </summary>
-        /// <param name="n">
-        /// n: string representing the customer name
-        /// customer.name = name
-        /// </param>
-        /// <param name="a">
-        /// a: string representing the customer address
-        /// customer.address = a
-        /// </param>
-        /// <param name="num">
-        /// num: string representing the customer number
-        /// customer.number = num
-        /// </param>
-        /// <param name="p">
-        /// p: string representing the customer password
-        /// </param>
-        /// <param name="u">
-        /// u: string representing the customer username 
-        /// customer.username = u </param>
-        /// <returns> Boolean -> true if customer was created. False if the customer wasn't created </returns>
-        public Boolean addCustomer(string n, string a, string num, string p, string u)
-        {
-            //Could we throw an exception instead of returning t/f. Because then we have to check the return value and may cause other issues. 
-            // Add Customer to the _customerList
-            foreach (Customer c in _customerList)
-            {
-                if (c.UserName == u || c.Number == num)
-                {
-                    return false;
-                }
-            }
-            _customerList.Add(new Customer(n, a, num, p, u));
-            return true;
-        }
-
-        public Boolean addCustomer(string n, string a, string num, string p, string u, string card, string date)
-        {
-            //Could we throw an exception instead of returning t/f. Because then we have to check the return value and may cause other issues. 
-            // Add Customer to the _customerList
-            foreach (Customer c in _customerList)
-            {
-                if (c.UserName == u || c.Number == num)
-                {
-                    return false;
-                }
-            }
-            _customerList.Add(new Customer(n, a, num, p, u, card, date));
-            return true;
-        }
-
-        /// <summary>
-        /// Allows the customer to log in using their phone number and password
-        /// </summary>
-        /// <param name="num">
-        /// num: string
-        /// num representes their phone number see addCusteorm for more infromation </param>
-        /// <param name="p">
-        /// p: string
-        /// p: represents their password should match </param>
-        /// <returns>Customer obj: if success then a specific customer object will be returned.
-        /// if generic ie null then their login attempt failed</returns>
-        public bool LogInNumber(string num, string p)
-        {
-            foreach (Customer c in _customerList)
-            {
-                if (num == c.Number & p == c.Password)
-                {
-                    currentCustomer = c;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Allows the customer to log in using their phone number and password
-        /// </summary>
-        /// <param name="u">
-        /// u: string
-        /// u: representes their userName see addCusteorm for more infromation </param>
-        /// <param name="p">
-        /// p: string
-        /// p: represents their password should match </param>
-        /// <returns>Boolean: if success then true else false.
-        /// if generic ie null then their login attempt failed</returns>
         public bool LogInUserName(string u, string p)
         {
             //changed return types 
@@ -161,59 +69,57 @@ namespace PizzaProjectSWE
             return false;
         }
 
-        /// <summary>
-        /// Essentially a helper method that allows you to see if a username is present already
-        /// </summary>
-        /// <param name="username">
-        /// username: string
-        /// username: is a string that represents the customer username it'll be compared to all present usernames
-        /// </param>
-        /// <returns>Boolean
-        ///     if true
-        ///         Customer username is present
-        ///     else
-        ///         Customer username isn't present 
-        /// </returns>
-        public Boolean isCustomerPresent(string username)
+        public bool LogInNumber(string num, string p)
         {
-            /* all other attributes of the Customer don't matter*/
             foreach (Customer c in _customerList)
             {
-                if (c.UserName == username)
+                if (num == c.Number & p == c.Password)
                 {
-                    return false;
+                    currentCustomer = c;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
+        public void SetCustomer(int CustomerIndex)
+        {
+            if (CustomerIndex > _customerList.Count - 1 || _customerList.Count < 0)
+            {
+                Console.WriteLine("That customer isn't in the list");
+            }
+            currentCustomer = _customerList[CustomerIndex];
+            Console.WriteLine("Customer is Set");
+        }
+        public void SetCustomerNull()
+        {
+            currentCustomer = null;
+        }
 
-        /// <summary>
-        /// Uses getJson method located above
-        /// converts that into a List(string) and writes that into a files called CustomerInfo.txt 
-        /// </summary>
+        //public void addCustomer()
+        //{
+        //    _customerList.Add(new Customer());
+        //}
+
+        public void initObjects()
+        {
+            _customerList = new List<Customer>();
+        }
         public void SaveInformation()
         {
-            string json = getJson();
+            string json = GetJson();
             string[] jsonEnum = json.Split('\n');
             File.WriteAllLines("CustomerInfo.txt", jsonEnum);
         }
+        public bool CheckforCustomerInfo()
+        {
+            return File.Exists("CustomerInfo.txt");
+        }
 
-        /// <summary>
-        /// Method is the inverse of the SaveInformation Method
-        /// Creates A Ilist(Customer) 
-        /// reads CustomerInfo.txt -> converts from string[] to string 
-        /// reads string and depostis value info the List(Customer) [mentioned above]
-        /// performs addCustomer on all Customer objects that are in List obj
-        /// </summary>
         public void LoadCustomerInformation()
         {
-            if (!File.Exists("CustomerInfo.txt"))
-            {
-                Console.WriteLine("The Customer Info file cannot be found");
-                return;
-            }
-            IList<Customer> CustomerInfo;
+            Customer selectedCustomer;
+            CustomerManager CustomerInfo = new CustomerManager();
             string[] jsonEnum = File.ReadAllLines("CustomerInfo.txt");
             string json = String.Join("\n", jsonEnum);
             JsonTextReader r = new JsonTextReader(new StringReader(json));
@@ -226,189 +132,170 @@ namespace PizzaProjectSWE
                 return;
             }
             JsonSerializer s = new JsonSerializer();
-            CustomerInfo = JsonConvert.DeserializeObject<IList<Customer>>(json);
-            foreach (Customer customer in CustomerInfo)
-            {
-                addCustomer(customer.Name, customer.Address, customer.Number, customer.Password, customer.UserName);
-            }
-
+            CustomerInfo = JsonConvert.DeserializeObject<CustomerManager>(json);
+            _customerList = CustomerInfo._customerList;
 
         }
-        /// <summary>
-        /// Method for testing purposes only.
-        /// It removed all Locally stored Custmers in the customerinfo file
-        /// </summary>
-        public void DeleteFile()
+        public Customer addCustomer(string name, string addr, string num, string pass, string username, string CardNumber = null, string ExpDate = null)
         {
-
-            File.Delete("CustomerInfo.txt");
+            _customerList.Add(new Customer(name, addr, num, pass, username, CardNumber, ExpDate));
+            return _customerList[_customerList.Count - 1];
         }
-
-        /// <summary>
-        /// Internal class that provides a blueprint for the customer class
-        /// setters and getters implemented for:
-        ///     - CustomerID
-        ///     - Name
-        ///     - Address
-        ///     - Number
-        ///     - Password
-        ///     - UserName
-        /// </summary>
         public class Customer
         {
-            private static int _customerID = 0;
-            public int CustomerID { get; private set; }
+            [JsonProperty("Customer")]
+            private static int _customerOrderCounter = 0;
             public string Name { get; set; }
             public string Address { get; set; }
             public string Number { get; set; }
             public string Password { get; set; }
             public string UserName { get; set; }
+            private int _currentOrder { get; set; }
+            public List<Order> Orders { get; set; }
+            public PaymentInformation PaymentInfo { get; set; }
 
-            private Order Cart;
-
-            public PaymentInformation _pi;
-
-            public List<Order> Orders = new List<Order>();
-
-            /// <summary>
-            /// Add foods to Cart Obj
-            /// </summary>
-            /// <param name="foods">
-            /// foods is a list even if it ontains </param>
-            public void AddFoodToOrder(List<Food> foods)
+            public void Checkout(List<Food> foods)
             {
-                if (foods.Count == 0)
-                {
-                    // Say something about there being no items in the cart
-                    return;
-                }
-                Cart = new Order();
-                
-
+                Orders.Add(new Order(foods));
+                Orders[_currentOrder].GetTotal();
             }
 
             public string GetJson()
             {
                 return JsonConvert.SerializeObject(this);
             }
-
-            public void CheckOut(List<Food> foods)
-            {
-                if (foods.Count == 0)
-                {
-                    return;
-                }
-                Order o = new Order();
-                foreach(Food f in foods)
-                {
-                    o.addFood(f);
-                }
-
-                this.Orders.Add(o);
-            }
-
-            /// <summary>
-            /// allows payment information to be saved 
-            /// </summary>
-            /// <param name="c">
-            /// c: string
-            /// c: represents the card number for customers</param>
-            /// <param name="e">
-            /// e: string
-            /// e: represents the card expirationd date for customer payment information </param>
-            public void setPaymentInfo(string c, string e)
-            {
-                _pi = new PaymentInformation(c, e);
-                return;
-
-            }
-
-            private const string _filename = "CustomerInfo.txt";
-
-            /// <summary>
-            /// Constructor for customer object
-            /// </summary>
-            /// <param name="n"></param>
-            /// <param name="a"></param>
-            /// <param name="num"></param>
-            /// <param name="p"></param>
-            /// <param name="u"></param>
-            public Customer(string n, string a, string num, string p, string u)
-            {
-
-                Name = n;
-                Address = a;
-                Number = num;
-                Password = p;
-                CustomerID = _customerID++;
-                UserName = u;
-            }
-
-            public Customer(string n, string a, string num, string p, string u, string cardnumber, string expDate)
-            {
-
-                Name = n;
-                Address = a;
-                Number = num;
-                Password = p;
-                CustomerID = _customerID++;
-                UserName = u;
-                _pi = new PaymentInformation(cardnumber, expDate);
-            }
-
-            public String GetRecentOrder()
+            public string GetRecentOrder()
             {
                 if (Orders.Count == 0)
                 {
-                    return "There are no orders to return";
+                    return "No orders present";
                 }
-                return Orders[Orders.Count - 1].GetJson();
+                return JsonConvert.SerializeObject(Orders[_currentOrder--]);
             }
 
+            public Customer()
+            {
+                initObjects();
+            }
+
+            //public Customer(string f, string l, string attr)
+            //{
+            //    initObjects();
+            //    fname = f;
+            //    lname = l;
+            //    this.attr = attr;
+            //}
+
+            public Customer(string name, string addr, string num, string pass, string username, string CardNumber = null, string ExpDate = null)
+            {
+                initObjects();
+                Name = name;
+                Address = addr;
+                Number = num;
+                Password = pass;
+                UserName = username;
+                if (CardNumber != null && ExpDate != null)
+                {
+                    PaymentInfo.CardNumber = CardNumber;
+                    PaymentInfo.ExpDate = ExpDate;
+                }
+            }
+
+            public void initObjects()
+            {
+                Orders = new List<Order>();
+                PaymentInfo = new PaymentInformation();
+                _currentOrder = 0;
+
+            }
+            public void addOrder(List<Food> food)
+            {
+                //Orders.Add(new Order(food));
+                Checkout(food);
+                _currentOrder++;
+            }
+            //public void addOrder(string[] food)
+            //{
+            //    Orders.Add(new Order(food));
+            //    Checkout();
+            //    _currentOrder++;
+            //}
             public class PaymentInformation
             {
-                public string cardNumber = "";
-                public string expDate = "";
+                [JsonProperty("PaymentInformation")]
+                public string CardNumber { get; set; }
+                public string ExpDate { get; set; }
                 public PaymentInformation(string c, string e)
                 {
-                    cardNumber = c;
-                    expDate = e;
+                    CardNumber = c;
+                    ExpDate = e;
                 }
-            }
-        }
-
-        public class Order
-        {
-            public int orderNumber;
-            public double orderTotal;
-            public List<Food> FoodItems = new List<Food>();
-
-            public Order()
-            {
-                orderNumber = CustomerManager.orderNumber++;
-                orderTotal = 0;
-            }
-
-            public void listOrder()
-            {
-                foreach (Food food in FoodItems)
+                public PaymentInformation()
                 {
-                    Console.WriteLine(String.Format("{0}: {1} \t\t\t{3}", food.category, food.description, food.cost));
+                }
+                public string GetJson()
+                {
+                    return JsonConvert.SerializeObject(this);
                 }
             }
-
-            public string GetJson()
+            public class Order
             {
-                return JsonConvert.SerializeObject(this);
+                [JsonProperty("Orders")]
+
+                public int OrderNumber { get; set; }
+                public double OrderTotal { get; set; }
+                public List<Food> FoodItems { get; set; }
+                public Order()
+                {
+
+                    initObjects();
+                }
+                public Order(string Desc, MenuCategory cat, double cost)
+                {
+                    initObjects();
+                    FoodItems.Add(new Food(Desc, cat, cost));
+                }
+                public Order(Food food)
+                {
+                    initObjects();
+                }
+                public Order(Food[] food)
+                {
+                    initObjects();
+                    foreach (Food f in food)
+                    {
+                        FoodItems.Add(f);
+                    }
+                }
+                public Order(List<Food> foods)
+                {
+                    initObjects();
+                    foreach (Food f in foods)
+                    {
+                        FoodItems.Add(f);
+                    }
+                }
+                public void addFood(Food food)
+                {
+                    
+                }
+
+                public void initObjects()
+                {
+                    OrderNumber = _customerOrderCounter++;
+                    FoodItems = new List<Food>();
+                    OrderTotal = 0;
+                }
+                public double GetTotal()
+                {
+                    foreach (Food f in FoodItems)
+                    {
+                        OrderTotal += f.cost;
+                    }
+                    return OrderTotal;
+                }
             }
-
-            public void addFood(Food food)
-            {
-                FoodItems.Add(food);
-                orderTotal += food.cost;
-            }
-
-
         }
+
     }
 }
