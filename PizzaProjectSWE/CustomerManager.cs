@@ -433,7 +433,7 @@ namespace PizzaProjectSWE
                 /// <summary>
                 /// creates an internal list of FoodItems for the Order
                 /// </summary>
-                List<Food> FoodItems { get; set; }
+                public List<Food> FoodItems { get; set; }
                 /// <summary>
                 /// Empty constructors calls initObjects
                 /// </summary>
