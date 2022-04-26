@@ -53,10 +53,10 @@ namespace PizzaProjectSWE
             menuList.Add(new Food("Extra Large Cheese", MenuCategory.Pizza, 21.99));
             menuList.Add(new Food("Extra Large Pepporoni", MenuCategory.Pizza, 22.99));
             menuList.Add(new Food("Extra Large Supreme", MenuCategory.Pizza, 25.99));
-            menuList.Add(new Food("Brooklyn Style Crust", MenuCategory.PizzaTopping, 2.50));
-            menuList.Add(new Food("Hand Tossed Crust", MenuCategory.PizzaTopping, 1.50));
-            menuList.Add(new Food("Thin Crust", MenuCategory.PizzaTopping, 0.99));
-            menuList.Add(new Food("Pan Pizza Crust", MenuCategory.PizzaTopping, 3.50));
+            menuList.Add(new Food("Brooklyn Style Crust", MenuCategory.Crust, 2.50));
+            menuList.Add(new Food("Hand Tossed Crust", MenuCategory.Crust, 1.50));
+            menuList.Add(new Food("Thin Crust", MenuCategory.Crust, 0.99));
+            menuList.Add(new Food("Pan Pizza Crust", MenuCategory.Crust, 3.50));
             menuList.Add(new Food("Pepperoni", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Sausage", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Mushroom", MenuCategory.PizzaTopping, 0.99));
@@ -69,6 +69,9 @@ namespace PizzaProjectSWE
             menuList.Add(new Food("Salami", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Beef", MenuCategory.PizzaTopping, 0.99));
             menuList.Add(new Food("Italian Sausage", MenuCategory.PizzaTopping, 0.99));
+            menuList.Add(new Food("Garlic Knots 4 Peice", MenuCategory.side, 6.99));
+            menuList.Add(new Food("Bread Sticks", MenuCategory.side, 6.99));
+            menuList.Add(new Food("Pretzel Twists", MenuCategory.side, 3.50));
             menuList.Add(new Food("Buffalo Wing 6 Piece", MenuCategory.side, 7.99));
             menuList.Add(new Food("Lemon Pepper Wing 6 Piece", MenuCategory.side, 7.99));
             menuList.Add(new Food("Barbecue Wing 6 Piece", MenuCategory.side, 7.99));
@@ -78,13 +81,9 @@ namespace PizzaProjectSWE
             menuList.Add(new Food("Buffalo Wing 25 Piece", MenuCategory.side, 21.99));
             menuList.Add(new Food("Lemon Pepper Wing 25 Piece", MenuCategory.side, 21.99));
             menuList.Add(new Food("Barbecue Wing 25 Piece", MenuCategory.side, 21.99));
-            menuList.Add(new Food("Garlic Knots 4 Peice", MenuCategory.sideTopping, 6.99));
-            menuList.Add(new Food("Bread Sticks", MenuCategory.sideTopping, 6.99));
-            menuList.Add(new Food("Pretzel Twists", MenuCategory.sideTopping, 3.50));
             menuList.Add(new Food("Blue Cheese Dressing", MenuCategory.sideTopping, 1.50));
             menuList.Add(new Food("Ranch Dressing", MenuCategory.sideTopping, 1.50));
             menuList.Add(new Food("Honey Mustard", MenuCategory.sideTopping, 1.50));
-            menuList.Add(new Food("Ceasar Salad Dressing", MenuCategory.sideTopping, 2.50));
             menuList.Add(new Food("Marinara Sauce", MenuCategory.sideTopping, 1.50));
             menuList.Add(new Food("Garlic Sauce", MenuCategory.sideTopping, 1.50));
             menuList.Add(new Food("16oz Coke", MenuCategory.Drink, 0.99));
@@ -133,6 +132,9 @@ namespace PizzaProjectSWE
                 {
                     case MenuCategory.Pizza:
                         pizzaListBox.Items.Add(c);
+                        break;
+                    case MenuCategory.Crust:
+                        crustBox.Items.Add(c);
                         break;
                     case MenuCategory.PizzaTopping:
                         pizzaToppingListBox.Items.Add(c);
@@ -244,11 +246,44 @@ namespace PizzaProjectSWE
             loadMenu();
             populateMenuGUI();
         }
+        /// <pizzaToppingsLimit>
+        /// This method handles the creation of the pizza. 
+        /// It allows us to check if the user selects more than 4 toppings and stops them if they do. It will only add the item to the cart if the users input
+        /// for toppings is < 4.
+        /// If the input is correct we add it to the currentcartlist and to the cartBox list box for the user to see.
+        /// </summary>
+        /// <returns></returns>
+        public bool pizzaToppingsLimit()
+        {
+            List<Food> pizzaCreationList = new List<Food>();
+            pizzaCreationList.Add((Food)pizzaListBox.SelectedItem);
+            pizzaCreationList.Add((Food)crustBox.SelectedItem);
+            int count = 0;
+            foreach (int i in pizzaToppingListBox.SelectedIndices)
+            {
+                if(count < 4)
+                {
+                    pizzaCreationList.Add((Food)pizzaToppingListBox.Items[i]);
+                    count++;
+                }
+                else
+                {
+                    MessageBox.Show("You may only select 4 toppings please remake your pizza");
+                    return false;
+                }
+            }
+            foreach(Food c in pizzaCreationList)
+            {
+                cartBox.Items.Add(c.ToString());
+                currentCartItems.Add(c);
+            }
+            return true;
+
+        }
         /// <addPizzaButton_Click>
         /// This method is used when the add pizza button is clicked.
-        /// This is where we use currentCartItems list to add items as well as adding them to the cart box.
-        /// after adding it clears the options for the pizzaListBox and the pizzaToppingListBox
-        /// Then it computes the total.
+        /// this method calls pizzaToppingsLimit and checks if the user creates the pizza correctly
+        ///it then computes the total for the cart.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -256,15 +291,12 @@ namespace PizzaProjectSWE
         {
             if (pizzaListBox.SelectedIndex == -1)
                 return;
-            cartBox.Items.Add(pizzaListBox.SelectedItem.ToString());
-            currentCartItems.Add((Food)pizzaListBox.SelectedItem);
-            foreach(int i in pizzaToppingListBox.SelectedIndices)
-            {
-                cartBox.Items.Add(pizzaToppingListBox.Items[i].ToString());
-                currentCartItems.Add((Food)pizzaToppingListBox.Items[i]);
-            }
+            pizzaToppingsLimit();
             pizzaListBox.ClearSelected();
+            crustBox.ClearSelected();
             pizzaToppingListBox.ClearSelected();
+            crustBox.Enabled = false;
+            pizzaToppingListBox.Enabled = false;
             computeTotal(cartBox);
 
         }
@@ -333,7 +365,13 @@ namespace PizzaProjectSWE
                 cartBox.Items.Remove(cartBox.SelectedItem);
                 for (int i = 0; i < currentCartItems.Count; i++)
                 {
-                    if (currentCartItems[i].category == MenuCategory.PizzaTopping)
+                    if(currentCartItems[i].category == MenuCategory.Crust)
+                    {
+                        cartBox.Items.RemoveAt(i);
+                        currentCartItems.RemoveAt(i);
+                        i--;
+                    }
+                    else if (currentCartItems[i].category == MenuCategory.PizzaTopping)
                     {
                         cartBox.Items.RemoveAt(i);
                         currentCartItems.RemoveAt(i);
@@ -383,11 +421,11 @@ namespace PizzaProjectSWE
         {
             if(pizzaListBox.SelectedItems.Count > 0)
             {
-                pizzaToppingListBox.Enabled = true;
+                crustBox.Enabled = true;
             }
             else
             {
-                pizzaToppingListBox.Enabled = false;
+                crustBox.Enabled = false;
             }
         }
         /// <wingListBox_SelectedIndexChanged>
@@ -444,6 +482,20 @@ namespace PizzaProjectSWE
             }
 
             computeTotal(currentCartItems);
+        }
+
+       
+
+        private void crustBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (crustBox.SelectedItems.Count > 0)
+            {
+                pizzaToppingListBox.Enabled = true;
+            }
+            else
+            {
+                crustBox.Enabled = false;
+            }
         }
 
         private void MenuForm_FormClosing(object sender, FormClosingEventArgs e)

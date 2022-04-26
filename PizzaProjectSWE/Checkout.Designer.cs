@@ -217,7 +217,7 @@ namespace PizzaProjectSWE
         private System.Windows.Forms.RadioButton existingCardButton;
         private System.Windows.Forms.RadioButton otherDebitRadio;
         private System.Windows.Forms.Label orderTotalDescription;
-        private System.Windows.Forms.Label orderTotal;
+        
         private System.Windows.Forms.Label totalLabel;
         private System.Windows.Forms.GroupBox paymentGroupBox;
         private System.Windows.Forms.RadioButton carryOutRadioButton;
