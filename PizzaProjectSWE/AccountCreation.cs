@@ -24,7 +24,10 @@ namespace PizzaProjectSWE
         /// <param name="e"></param>
         private void createAccountButton_Click(object sender, EventArgs e)
         {
-            MenuForm.customerManagerObject.addCustomer(nameTextBox.Text, addressTextBox.Text, phoneNumberTextBox.Text, PasswordTextBox.Text, usernameTextBox.Text);
+            if (cardNumBox.Text != "" && dateBox.Text != "")
+                MenuForm.customerManagerObject.addCustomer(nameTextBox.Text, addressTextBox.Text, phoneNumberTextBox.Text, PasswordTextBox.Text, usernameTextBox.Text, cardNumBox.Text, dateBox.Text);
+            else 
+                MenuForm.customerManagerObject.addCustomer(nameTextBox.Text, addressTextBox.Text, phoneNumberTextBox.Text, PasswordTextBox.Text, usernameTextBox.Text);
             DialogResult = DialogResult.OK;
         }
         /// <cancelButton_Click>

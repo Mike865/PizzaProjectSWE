@@ -7,16 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace PizzaProjectSWE
 {
     public partial class Log_In : Form
     {
+        /// <summary>
+        /// This static customerManagerObject allows us to access all the methods inside of the class from any form. 
+        /// </summary>
+        public static CustomerManager customerManagerObject = new CustomerManager();
         /// <Log_In>
         /// This method initializes the form.
         /// </summary>
         public Log_In()
         {
+            if (File.Exists("CustomerInfo.txt"))
+                customerManagerObject.LoadCustomerInformation();
+
             InitializeComponent();
         }
         /// <createAccount_Click>
@@ -40,6 +48,7 @@ namespace PizzaProjectSWE
         private void guestButton_Click(object sender, EventArgs e)
         {
             MenuForm.guestCheckout = true;
+            customerManagerObject.currentCustomer = customerManagerObject.GetCustomerObj(0);
             DialogResult = DialogResult.Cancel;
         }
         /// <LogInButton_Click>

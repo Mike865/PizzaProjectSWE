@@ -28,6 +28,8 @@ namespace PizzaProjectSWE
         /// <Food>
         /// Allows us to create an empty food object.
         /// </summary>
+        /// 
+        public string displayMember;
         public Food()
         {
 
@@ -43,6 +45,7 @@ namespace PizzaProjectSWE
             description = theDescription;
             category = theCategory;
             cost = theCost;
+            displayMember = "$ " + theCost + " " + theDescription;
         }
         /// <toString overridden>
         /// Allows us to display the cost and description of the food object in a listbox.

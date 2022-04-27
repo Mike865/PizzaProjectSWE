@@ -13,7 +13,8 @@ namespace PizzaProjectSWE
 
     public enum MenuCategory
     {
-        Pizza, 
+        Pizza,
+        Crust,
         PizzaTopping,
         side, 
         sideTopping,
